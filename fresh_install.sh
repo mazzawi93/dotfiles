@@ -12,13 +12,13 @@ echo "🔄 Starting fresh system installation..."
 # =============================================================================
 
 echo "📦 Installing build dependencies..."
-sudo apt update
+sudo apt update > /dev/null 2>&1
 sudo apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev \
     libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils \
     tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev \
     autoconf patch rustc libyaml-dev libgmp-dev libncurses5-dev \
     libgdbm6 libgdbm-dev libdb-dev uuid-dev unzip \
-    tmux zsh neovim git fzf ripgrep jq
+    tmux zsh neovim git fzf ripgrep jq > /dev/null 2>&1
 
 # =============================================================================
 # Git Configuration
@@ -53,8 +53,8 @@ sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null < /tmp/gith
 sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | \
     sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-sudo apt update
-sudo apt install gh -y
+sudo apt update > /dev/null 2>&1
+sudo apt install gh -y > /dev/null 2>&1
 
 # =============================================================================
 # ASDF Installation
@@ -182,7 +182,7 @@ chsh -s $(which zsh)
 echo "☁️ Installing Google Cloud CLI..."
 
 # Install prerequisites
-sudo apt-get install -y apt-transport-https ca-certificates gnupg curl
+sudo apt-get install -y apt-transport-https ca-certificates gnupg curl > /dev/null 2>&1
 
 # Create directory for the repository key
 sudo mkdir -p /usr/share/keyrings
@@ -196,8 +196,8 @@ echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.clou
     sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
 
 # Update and install the gcloud CLI
-sudo apt-get update
-sudo apt-get install -y google-cloud-cli
+sudo apt-get update > /dev/null 2>&1
+sudo apt-get install -y google-cloud-cli > /dev/null 2>&1
 
 # =============================================================================
 # Docker Installation
@@ -206,11 +206,11 @@ sudo apt-get install -y google-cloud-cli
 echo "🐳 Installing Docker..."
 
 # Remove older packages if they exist
-sudo apt-get remove -y docker docker-engine docker.io containerd runc || true
+sudo apt-get remove -y docker docker-engine docker.io containerd runc > /dev/null 2>&1 || true
 
 # Ensure pre-requisites are installed
-sudo apt-get update
-sudo apt-get install -y ca-certificates curl gnupg lsb-release
+sudo apt-get update > /dev/null 2>&1
+sudo apt-get install -y ca-certificates curl gnupg lsb-release > /dev/null 2>&1
 
 # Add Docker apt key
 sudo mkdir -p /etc/apt/keyrings
@@ -221,10 +221,10 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.
     sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 # Refresh apt repos
-sudo apt-get update
+sudo apt-get update > /dev/null 2>&1
 
 # Install Docker
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin > /dev/null 2>&1
 
 # Perform post-installation steps
 sudo groupadd docker 2>/dev/null || true
