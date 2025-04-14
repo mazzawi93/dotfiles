@@ -21,6 +21,12 @@ ZSH_THEME="robbyrussell"
 #  git
 #)
 
+# To view all plugins go here
+# https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/tmux
+plugins=(
+  tmux asdf npm
+)
+
 # Source oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 
@@ -28,6 +34,11 @@ source $ZSH/oh-my-zsh.sh
 
 export LANG=en_US.UTF-8
 export EDITOR='nvim'
+
+# Disable pagers to output directly to terminal instead of new screens
+export PAGER=cat
+export GIT_PAGER=cat
+export LESS="-F -X"
 
 # ASDF setup
 export PATH="$HOME/.local/bin:$PATH"
@@ -49,6 +60,7 @@ alias gl="git log"
 alias ga="git add"
 alias gc="git commit -m"
 alias gp="git push"
+alias gbclean="git branch | grep -v 'main' | xargs git branch -D"
 
 # Directory navigation
 alias ll="ls -la"
