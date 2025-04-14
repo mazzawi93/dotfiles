@@ -42,21 +42,6 @@ git config --global core.editor "nvim"
 git config --global init.defaultBranch "main"
 git config --global pull.rebase false
 
-# Generate SSH key
-echo "🔑 Generating SSH key..."
-ssh-keygen -t ed25519 -C "$GIT_EMAIL" -f ~/.ssh/id_ed25519 -N ""
-
-# Start SSH agent
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_ed25519
-
-# Display the public key
-echo -e "\n📋 Your SSH public key (add this to GitHub/GitLab):"
-cat ~/.ssh/id_ed25519.pub
-echo -e "\n👉 Add this key at: https://github.com/settings/keys"
-echo -e "Press Enter to continue..."
-read
-
 # =============================================================================
 # GitHub CLI Installation
 # =============================================================================
@@ -148,19 +133,19 @@ echo "🔌 Installing ASDF plugins..."
 # Install specific versions
 echo "📦 Installing tool versions..."
 ~/.local/bin/asdf install just 1.40.0 
-~/.local/bin/asdf set just 1.40.0 -u
+~/.local/bin/asdf set just 1.40.0 --home
 
 ~/.local/bin/asdf install python 3.13.3
-~/.local/bin/asdf set python 3.13.3 -u 
+~/.local/bin/asdf set python 3.13.3 --home
 
 ~/.local/bin/asdf install terraform 1.6.6
-~/.local/bin/asdf set terraform 1.6.6 -u
+~/.local/bin/asdf set terraform 1.6.6 --home
 
 ~/.local/bin/asdf install ruby latest
-~/.local/bin/asdf set ruby latest -u
+~/.local/bin/asdf set ruby latest --home
 
 ~/.local/bin/asdf install nodejs 20.14.0
-~/.local/bin/asdf set nodejs 20.14.0 -u
+~/.local/bin/asdf set nodejs 20.14.0 --home
 
 echo "✅ ASDF tools installed successfully!"
 
