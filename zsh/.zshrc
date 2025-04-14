@@ -8,6 +8,36 @@ setopt appendhistory
 setopt hist_ignore_dups
 setopt hist_ignore_space
 
+# ===== OH-MY-ZSH CONFIGURATION =====
+
+# Path to your oh-my-zsh installation
+export ZSH="$HOME/.oh-my-zsh"
+
+# Set theme
+ZSH_THEME="robbyrussell"
+
+# Enable plugins
+plugins=(
+  git
+  docker
+  npm
+  python
+)
+
+# Source oh-my-zsh
+source $ZSH/oh-my-zsh.sh
+
+# ===== ENVIRONMENT VARIABLES =====
+
+export LANG=en_US.UTF-8
+export EDITOR='nvim'
+
+# ASDF setup
+export PATH="$HOME/.local/bin:$PATH"
+export ASDF_DIR="$HOME/.asdf"
+export ASDF_DATA_DIR="$HOME/.asdf"
+export PATH="$HOME/.asdf/shims:$PATH"
+
 # ===== ALIASES =====
 
 # Git aliases
@@ -22,7 +52,9 @@ alias ll="ls -la"
 alias ..="cd .."
 alias ...="cd ../.."
 
-# ===== PROMPT =====
+# Docker shortcuts
+alias dc="docker-compose"
+alias dps="docker ps"
 
-# Simple prompt with username, hostname, and current directory
-PROMPT='%F{green}%n@%m%f:%F{blue}%~%f$ '
+# Editor
+alias vi="nvim"

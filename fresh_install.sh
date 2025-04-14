@@ -1,4 +1,15 @@
+#!/bin/bash
 set -e
+
+# =============================================================================
+# Fresh Install Script - Linux
+# =============================================================================
+
+echo "🔄 Starting fresh system installation..."
+
+# =============================================================================
+# System Dependencies
+# =============================================================================
 
 echo "📦 Installing build dependencies..."
 sudo apt update
@@ -6,29 +17,31 @@ sudo apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev \
     libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils \
     tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev \
     autoconf patch rustc libyaml-dev libgmp-dev libncurses5-dev \
-    libgdbm6 libgdbm-dev libdb-dev uuid-dev
+    libgdbm6 libgdbm-dev libdb-dev uuid-dev unzip \
+    tmux zsh neovim git
 
-# sudo apt install make -y
-sudo apt install unzip -y
+# =============================================================================
+# GitHub CLI Installation
+# =============================================================================
 
-# # Install GH CLI
-# (type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) \
-# 	&& sudo mkdir -p -m 755 /etc/apt/keyrings \
-#         && out=$(mktemp) && wget -nv -O$out https://cli.github.com/packages/githubcli-archive-keyring.gpg \
-#         && cat $out | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
-# 	&& sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
-# 	&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
-# 	&& sudo apt update \
-# 	&& sudo apt install gh -y
+echo "🔗 Installing GitHub CLI..."
+sudo mkdir -p -m 755 /etc/apt/keyrings
+wget -nv -O /tmp/githubcli.gpg https://cli.github.com/packages/githubcli-archive-keyring.gpg
+sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null < /tmp/githubcli.gpg
+sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | \
+    sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+sudo apt update
+sudo apt install gh -y
 
-
-#!/bin/bash
-set -e
+# =============================================================================
+# ASDF Installation
+# =============================================================================
 
 echo "🧹 Removing old ASDF setup if it exists..."
 rm -rf ~/.asdf
 
-echo "📥 Installing ASDF binary..."
+echo "📥 Installing ASDF..."
 # Determine architecture and set download URL
 ARCH=$(dpkg --print-architecture)
 ASDF_VERSION="0.16.7"
@@ -78,19 +91,25 @@ export ASDF_DATA_DIR="$HOME/.asdf"
 export PATH="$HOME/.asdf/shims:$PATH"
 EOF
 
-# Add plugins
-echo "🔌 Installing ASDF plugins..."
+# Add environment variables for current session
 export PATH="$HOME/.local/bin:$PATH"
 export ASDF_DIR="$HOME/.asdf"
 export ASDF_DATA_DIR="$HOME/.asdf"
 export PATH="$HOME/.asdf/shims:$PATH"
 
+# =============================================================================
+# ASDF Plugins Installation
+# =============================================================================
+
+echo "🔌 Installing ASDF plugins..."
 ~/.local/bin/asdf plugin add just
 ~/.local/bin/asdf plugin add python
 ~/.local/bin/asdf plugin add terraform
 ~/.local/bin/asdf plugin add ruby
 ~/.local/bin/asdf plugin add nodejs
 
+# Install specific versions
+echo "📦 Installing tool versions..."
 ~/.local/bin/asdf install just 1.40.0 
 ~/.local/bin/asdf set just 1.40.0 -u
 
@@ -106,51 +125,97 @@ export PATH="$HOME/.asdf/shims:$PATH"
 ~/.local/bin/asdf install nodejs 20.14.0
 ~/.local/bin/asdf set nodejs 20.14.0 -u
 
-echo "✅ ASDF installed successfully!"
-echo "🚀 Please restart your shell or run 'source ~/.bashrc' to start using ASDF"
+echo "✅ ASDF tools installed successfully!"
 
+# =============================================================================
+# ZSH Installation & Configuration
+# =============================================================================
 
+echo "🐚 Setting up ZSH and Oh-My-ZSH..."
 
-# Ensures not older packages are installed
-sudo apt-get remove docker docker-engine docker.io containerd runc
+# Install Oh My ZSH
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+# Set ZSH as default shell
+chsh -s $(which zsh)
+
+# Note: ASDF setup is now in the dotfiles .zshrc file that will be linked by install.sh
+
+# =============================================================================
+# Google Cloud CLI Installation
+# =============================================================================
+
+echo "☁️ Installing Google Cloud CLI..."
+
+# Install prerequisites
+sudo apt-get install -y apt-transport-https ca-certificates gnupg curl
+
+# Create directory for the repository key
+sudo mkdir -p /usr/share/keyrings
+
+# Import the Google Cloud public key (for newer distributions - Debian 9+ or Ubuntu 18.04+)
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | \
+    sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
+
+# Add the gcloud CLI distribution URI as a package source
+echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | \
+    sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+
+# Update and install the gcloud CLI
+sudo apt-get update
+sudo apt-get install -y google-cloud-cli
+
+# =============================================================================
+# Docker Installation
+# =============================================================================
+
+echo "🐳 Installing Docker..."
+
+# Remove older packages if they exist
+sudo apt-get remove -y docker docker-engine docker.io containerd runc || true
 
 # Ensure pre-requisites are installed
 sudo apt-get update
-sudo apt-get install \
-	ca-certificates \
-	curl \
-	gnupg \
-	lsb-release
+sudo apt-get install -y ca-certificates curl gnupg lsb-release
 
-# Adds docker apt key
+# Add Docker apt key
 sudo mkdir -p /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 
-# Adds docker apt repository
-echo \
-	"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-	$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+# Add Docker apt repository
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | \
+    sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-# Refreshes apt repos
+# Refresh apt repos
 sudo apt-get update
 
-# Installs Docker CE
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+# Install Docker
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-# Perform the post-installation steps:
- # Ensures docker group exists
-sudo groupadd docker
-
-   # Ensures you are part of it
+# Perform post-installation steps
+sudo groupadd docker 2>/dev/null || true
 sudo usermod -aG docker $USER
 
-   # Now, close your shell and open another for taking the group changes into account
+# =============================================================================
+# Final Setup Notes
+# =============================================================================
 
-
-#    Make Docker Daemon start on WSL initialization:
-# First, make sure you are running a recent version of WSL2 (you can update with wsl.exe --update).
-
-# Then, you only need to add:
-
-#    [boot]
-#    systemd=true
+echo "🎉 Installation complete!"
+echo ""
+echo "⚠️  Important next steps:"
+echo "1. Close your shell and open another one for group changes to take effect"
+echo "2. New shell will use ZSH with Oh-My-ZSH as the default shell"
+echo "3. Docker access will require logging out and back in"
+echo ""
+echo "For WSL2 users - to enable Docker at startup, add the following to /etc/wsl.conf:"
+echo "[boot]"
+echo "systemd=true"
+echo ""
+echo "🔧 Installed components:"
+echo "- Build tools and dependencies"
+echo "- GitHub CLI (gh)"
+echo "- ASDF version manager with plugins (just, python, terraform, ruby, nodejs)"
+echo "- ZSH with Oh-My-ZSH"
+echo "- tmux and neovim"
+echo "- Google Cloud CLI (gcloud)"
+echo "- Docker CE"
