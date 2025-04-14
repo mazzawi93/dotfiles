@@ -18,7 +18,44 @@ sudo apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev \
     tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev \
     autoconf patch rustc libyaml-dev libgmp-dev libncurses5-dev \
     libgdbm6 libgdbm-dev libdb-dev uuid-dev unzip \
-    tmux zsh neovim git
+    tmux zsh neovim git fzf ripgrep jq
+
+# =============================================================================
+# Git Configuration
+# =============================================================================
+
+echo "🔄 Setting up Git configuration..."
+
+# Prompt for Git user info
+echo "Please enter your Git username:"
+read GIT_USERNAME
+
+echo "Please enter your Git email:"
+read GIT_EMAIL
+
+# Configure Git globally
+git config --global user.name "$GIT_USERNAME"
+git config --global user.email "$GIT_EMAIL"
+
+# Configure common Git settings
+git config --global core.editor "nvim"
+git config --global init.defaultBranch "main"
+git config --global pull.rebase false
+
+# Generate SSH key
+echo "🔑 Generating SSH key..."
+ssh-keygen -t ed25519 -C "$GIT_EMAIL" -f ~/.ssh/id_ed25519 -N ""
+
+# Start SSH agent
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+
+# Display the public key
+echo -e "\n📋 Your SSH public key (add this to GitHub/GitLab):"
+cat ~/.ssh/id_ed25519.pub
+echo -e "\n👉 Add this key at: https://github.com/settings/keys"
+echo -e "Press Enter to continue..."
+read
 
 # =============================================================================
 # GitHub CLI Installation
@@ -128,6 +165,18 @@ echo "📦 Installing tool versions..."
 echo "✅ ASDF tools installed successfully!"
 
 # =============================================================================
+# Claude Code Installation
+# =============================================================================
+
+echo "🤖 Installing Claude Code CLI..."
+
+# Install Claude Code with npm
+npm install -g @anthropic-ai/claude-code
+
+# Reshim to make sure the command is available
+~/.local/bin/asdf reshim nodejs
+
+# =============================================================================
 # ZSH Installation & Configuration
 # =============================================================================
 
@@ -213,8 +262,10 @@ echo "systemd=true"
 echo ""
 echo "🔧 Installed components:"
 echo "- Build tools and dependencies"
+echo "- Git configuration and SSH key"
 echo "- GitHub CLI (gh)"
 echo "- ASDF version manager with plugins (just, python, terraform, ruby, nodejs)"
+echo "- Claude Code CLI"
 echo "- ZSH with Oh-My-ZSH"
 echo "- tmux and neovim"
 echo "- Google Cloud CLI (gcloud)"

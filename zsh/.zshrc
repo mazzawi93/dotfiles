@@ -38,6 +38,12 @@ export ASDF_DIR="$HOME/.asdf"
 export ASDF_DATA_DIR="$HOME/.asdf"
 export PATH="$HOME/.asdf/shims:$PATH"
 
+# Ensure reshimming happens automatically when installing global npm packages
+npm_install_global() {
+  npm install -g "$@" && ~/.local/bin/asdf reshim nodejs
+}
+alias npm-g="npm_install_global"
+
 # ===== ALIASES =====
 
 # Git aliases

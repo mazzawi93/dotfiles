@@ -14,8 +14,10 @@ If you're setting up a brand new system, first run the fresh install script:
 
 This script installs:
 - Essential build dependencies
+- Git configuration and SSH key generation
 - GitHub CLI (gh)
 - ASDF version manager with plugins (just, python, terraform, ruby, nodejs)
+- Claude Code CLI
 - ZSH with Oh-My-ZSH
 - tmux and neovim
 - Google Cloud CLI (gcloud)
