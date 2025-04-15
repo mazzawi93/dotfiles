@@ -62,10 +62,11 @@ require("lazy").setup({
     config = function()
       require("telescope").setup()
       -- Key mappings with desc attribute for which-key to pick up
-      vim.keymap.set("n", "<C-p>", require("telescope.builtin").find_files, { desc = "Find files" })
-      vim.keymap.set("n", "<leader>ff", require("telescope.builtin").find_files, { desc = "Find files" })
-      vim.keymap.set("n", "<leader>fg", require("telescope.builtin").live_grep, { desc = "Live grep" })
-      vim.keymap.set("n", "<leader>fb", require("telescope.builtin").buffers, { desc = "Find buffers" })
+      local builtin = require('telescope.builtin')
+      vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Telescope Find files" })
+      vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Telescope live grep" })
+      vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Telescope buffers" })
+      vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope Help Tags" })
     end,
   },
 })
