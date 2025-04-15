@@ -45,20 +45,6 @@ git config --global init.defaultBranch "main"
 git config --global pull.rebase false
 
 # =============================================================================
-# GitHub CLI Installation
-# =============================================================================
-
-echo "🔗 Installing GitHub CLI..."
-sudo mkdir -p -m 755 /etc/apt/keyrings
-wget -nv -O /tmp/githubcli.gpg https://cli.github.com/packages/githubcli-archive-keyring.gpg
-sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null < /tmp/githubcli.gpg
-sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | \
-    sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-sudo apt update > /dev/null 2>&1
-sudo apt install gh -y > /dev/null 2>&1
-
-# =============================================================================
 # ASDF Installation
 # =============================================================================
 
@@ -132,26 +118,30 @@ echo "🔌 Installing ASDF plugins..."
 ~/.local/bin/asdf plugin add ruby
 ~/.local/bin/asdf plugin add nodejs
 ~/.local/bin/asdf plugin add neovim
+~/.local/bin/asdf plugin add github-cli
 
 # Install specific versions
 echo "📦 Installing tool versions..."
 ~/.local/bin/asdf install just 1.40.0 
-~/.local/bin/asdf set just 1.40.0 --home
+~/.local/bin/asdf set -u just 1.40.0
 
 ~/.local/bin/asdf install python 3.13.3
-~/.local/bin/asdf set python 3.13.3 --home
+~/.local/bin/asdf set -u python 3.13.3
 
 ~/.local/bin/asdf install terraform 1.6.6
-~/.local/bin/asdf set terraform 1.6.6 --home
+~/.local/bin/asdf set -u terraform 1.6.6
 
 ~/.local/bin/asdf install ruby latest
-~/.local/bin/asdf set ruby latest --home
+~/.local/bin/asdf set -u ruby latest
 
 ~/.local/bin/asdf install nodejs 20.14.0
-~/.local/bin/asdf set nodejs 20.14.0 --home
+~/.local/bin/asdf set -u nodejs 20.14.0
 
 ~/.local/bin/asdf install neovim latest
-~/.local/bin/asdf set neovim latest --home
+~/.local/bin/asdf set -u neovim latest
+
+~/.local/bin/asdf install github-cli latest
+~/.local/bin/asdf set -u github-cli latest
 
 echo "✅ ASDF tools installed successfully!"
 
