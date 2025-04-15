@@ -119,6 +119,7 @@ echo "🔌 Installing ASDF plugins..."
 ~/.local/bin/asdf plugin add nodejs
 ~/.local/bin/asdf plugin add neovim
 ~/.local/bin/asdf plugin add github-cli
+~/.local/bin/asdf plugin add gcloud
 
 # Install specific versions
 echo "📦 Installing tool versions..."
@@ -142,6 +143,9 @@ echo "📦 Installing tool versions..."
 
 ~/.local/bin/asdf install github-cli latest
 ~/.local/bin/asdf set -u github-cli latest
+
+~/.local/bin/asdf install gcloud latest
+~/.local/bin/asdf set -u gcloud latest
 
 echo "✅ ASDF tools installed successfully!"
 
@@ -170,30 +174,6 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 chsh -s $(which zsh)
 
 # Note: ASDF setup is now in the dotfiles .zshrc file that will be linked by install.sh
-
-# =============================================================================
-# Google Cloud CLI Installation
-# =============================================================================
-
-echo "☁️ Installing Google Cloud CLI..."
-
-# Install prerequisites
-sudo apt-get install -y apt-transport-https ca-certificates gnupg curl > /dev/null 2>&1
-
-# Create directory for the repository key
-sudo mkdir -p /usr/share/keyrings
-
-# Import the Google Cloud public key (for newer distributions - Debian 9+ or Ubuntu 18.04+)
-curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | \
-    sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
-
-# Add the gcloud CLI distribution URI as a package source
-echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | \
-    sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-
-# Update and install the gcloud CLI
-sudo apt-get update > /dev/null 2>&1
-sudo apt-get install -y google-cloud-cli > /dev/null 2>&1
 
 # =============================================================================
 # Docker Installation
