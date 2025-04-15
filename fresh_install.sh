@@ -18,7 +18,9 @@ sudo apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev \
     tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev \
     autoconf patch rustc libyaml-dev libgmp-dev libncurses5-dev \
     libgdbm6 libgdbm-dev libdb-dev uuid-dev unzip \
-    tmux zsh neovim git fzf ripgrep jq > /dev/null 2>&1
+    tmux zsh git fzf ripgrep jq fd-find software-properties-common > /dev/null 2>&1
+
+# Neovim will be installed via ASDF in the plugins section
 
 # =============================================================================
 # Git Configuration
@@ -129,6 +131,7 @@ echo "🔌 Installing ASDF plugins..."
 ~/.local/bin/asdf plugin add terraform
 ~/.local/bin/asdf plugin add ruby
 ~/.local/bin/asdf plugin add nodejs
+~/.local/bin/asdf plugin add neovim
 
 # Install specific versions
 echo "📦 Installing tool versions..."
@@ -146,6 +149,9 @@ echo "📦 Installing tool versions..."
 
 ~/.local/bin/asdf install nodejs 20.14.0
 ~/.local/bin/asdf set nodejs 20.14.0 --home
+
+~/.local/bin/asdf install neovim latest
+~/.local/bin/asdf set neovim latest --home
 
 echo "✅ ASDF tools installed successfully!"
 
