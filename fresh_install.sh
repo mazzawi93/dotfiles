@@ -120,6 +120,8 @@ echo "🔌 Installing ASDF plugins..."
 ~/.local/bin/asdf plugin add neovim
 ~/.local/bin/asdf plugin add github-cli
 ~/.local/bin/asdf plugin add gcloud
+~/.local/bin/asdf plugin add golang
+~/.local/bin/asdf plugin add opentofu
 
 # Install specific versions
 echo "📦 Installing tool versions..."
@@ -146,6 +148,14 @@ echo "📦 Installing tool versions..."
 
 ~/.local/bin/asdf install gcloud latest
 ~/.local/bin/asdf set -u gcloud latest
+
+~/.local/bin/asdf install golang latest
+~/.local/bin/asdf set -u golang latest
+
+~/.local/bin/asdf install opentofu latest
+~/.local/bin/asdf set -u opentofu latest
+
+
 
 echo "✅ ASDF tools installed successfully!"
 
