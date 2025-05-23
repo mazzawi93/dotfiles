@@ -43,4 +43,7 @@ require("lazy").setup({
   { import = "plugins.which-key" },
   { import = "plugins.tokyonight" },
   { import = "plugins.telescope" },
+  { import = "plugins.treesitter" },
+  { import = "plugins.lsp" },
+  { import = "plugins.bufferline" },
 })

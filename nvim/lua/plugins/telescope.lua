@@ -26,6 +26,12 @@ return {
           file_sorter = require("telescope.sorters").get_fuzzy_file,
           -- Use fzf for sorting
           generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
+          mappings = {
+            i = {
+              ["<C-s>"] = "select_vertical",
+              ["<C-x>"] = "select_horizontal",
+            },
+          },
         },
         pickers = {
           find_files = {

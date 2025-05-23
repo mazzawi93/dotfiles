@@ -167,6 +167,8 @@ echo "🤖 Installing Claude Code CLI..."
 
 # Install Claude Code with npm
 npm install -g @anthropic-ai/claude-code
+npm install -g tree-sitter-cli
+npm install -g neovim
 
 # Reshim to make sure the command is available
 ~/.local/bin/asdf reshim nodejs
