@@ -21,10 +21,11 @@ ln -sf "$(pwd)/nvim/init.lua" ~/.config/nvim/init.lua
 echo "Linking tmux scripts to ~/.local/bin..."
 ln -sf "$(pwd)/tmux/colony-tmux" ~/.local/bin/colony-tmux
 
-# Link Neovim lua directory (for plugins)
+# Link Neovim lua directory (for plugins and config)
 echo "Linking Neovim lua directory..."
 mkdir -p ~/.config/nvim/lua
 ln -sf "$(pwd)/nvim/lua/plugins" ~/.config/nvim/lua/
+ln -sf "$(pwd)/nvim/lua/config" ~/.config/nvim/lua/
 
 echo "✅ Dotfiles installation complete!"
 echo "Backup files were created with .bak extension if original files existed."
